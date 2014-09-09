@@ -13,5 +13,9 @@ namespace BSP_Boom
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            new Controller.Controller().Sort();
+        }
     }
 }
