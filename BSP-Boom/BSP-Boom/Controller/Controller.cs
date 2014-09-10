@@ -29,47 +29,58 @@ namespace BSP_Boom.Controller
                 return null;
             }
             dimension = dimension % GameObject.DIMENSION;
-            
+
             int middlePos = median(min, max, dimension);
-            
+
             double middle = gameObjects[middlePos].getPosition(dimension);
-            Console.WriteLine("Dimension:" + dimension + " value: " + middle);
+            Console.WriteLine("Dimension:" + (dimension == 0 ? "x" : "y") + " value: " + middle);
 
             int lower = min, upper = max;
             while (lower < upper)
             {
-                bool step = false;
-                if (gameObjects[lower].getPosition(dimension) < middle)
+                while (lower < gameObjects.Length && lower <= middlePos && lower < max && gameObjects[lower].getPosition(dimension) < middle)
                 {
-                    step = true;
                     lower++;
                 }
-                if (gameObjects[upper].getPosition(dimension) > middle)
+                while (upper > 0 && upper >= middlePos && upper > lower && gameObjects[upper].getPosition(dimension) > middle)
                 {
-                    step = true;
                     upper--;
                 }
-                if (!step)
-                {
-                    if (middlePos == upper)
-                    {
-                        middlePos = lower;
-                    }
-                    else if (middle == lower)
-                    {
-                        middlePos = upper;
-                    }
+                swap<GameObject>(lower, upper, gameObjects);
 
-                    GameObject temp = gameObjects[upper];
-                    gameObjects[upper] = gameObjects[lower];
-                    gameObjects[lower] = temp;
+                if (middlePos == upper)
+                {
+                    middlePos = lower;
+                    upper--;
+                }
+
+                else if (middlePos == lower)
+                {
+                    middlePos = upper;
+                    lower++;
+                }
+                else
+                {
                     lower++;
                     upper--;
                 }
             }
-            QuickSort(min, middlePos, dimension + 1);
-            QuickSort(middlePos + 1, max, dimension + 1);
+            if (max - min > 2)
+            {
+                QuickSort(min, middlePos, dimension + 1);
+                QuickSort(middlePos + 1, max, dimension + 1);
+            }
+
             return null;
+        }
+
+        private T[] swap<T>(int pos1, int pos2, T[] array)
+        {
+            T temp = array[pos1];
+            array[pos1] = array[pos2];
+            array[pos2] = temp;
+
+            return array;
         }
 
         private int median(int min, int max, int dimension)
@@ -90,7 +101,7 @@ namespace BSP_Boom.Controller
                 return middlePos;
             }
 
-            if (last >= first && last <= middle || last<= first&& last>=middle)
+            if (last >= first && last <= middle || last <= first && last >= middle)
             {
                 return max;
             }
