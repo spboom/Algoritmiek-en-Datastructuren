@@ -24,7 +24,7 @@ namespace BSP_Boom.Controller
         }
         public GameObject[] QuickSort(int min, int max, int dimension)
         {
-            if (max - min <= 0)
+            if (max - min <= 1)
             {
                 return null;
             }
@@ -38,11 +38,11 @@ namespace BSP_Boom.Controller
             int lower = min, upper = max;
             while (lower < upper)
             {
-                while (lower < gameObjects.Length && lower <= middlePos && lower < max && gameObjects[lower].getPosition(dimension) < middle)
+                while (lower < gameObjects.Length && lower < middlePos && lower < max && gameObjects[lower].getPosition(dimension) <= middle)
                 {
                     lower++;
                 }
-                while (upper > 0 && upper >= middlePos && upper > lower && gameObjects[upper].getPosition(dimension) > middle)
+                while (upper > 0 && upper > middlePos && upper > lower && gameObjects[upper].getPosition(dimension) >= middle)
                 {
                     upper--;
                 }
@@ -51,24 +51,24 @@ namespace BSP_Boom.Controller
                 if (middlePos == upper)
                 {
                     middlePos = lower;
-                    upper--;
+                    //upper--;
                 }
 
                 else if (middlePos == lower)
                 {
                     middlePos = upper;
-                    lower++;
+                    //lower++;
                 }
-                else
+                //else
                 {
-                    lower++;
-                    upper--;
+                    //lower++;
+                    //upper--;
                 }
             }
-            if (max - min > 2)
+            //if (max - min > 2)
             {
-                QuickSort(min, middlePos, dimension + 1);
-                QuickSort(middlePos + 1, max, dimension + 1);
+                QuickSort(min, middlePos - 1, dimension + 1);
+                QuickSort(middlePos, max, dimension + 1);
             }
 
             return null;
