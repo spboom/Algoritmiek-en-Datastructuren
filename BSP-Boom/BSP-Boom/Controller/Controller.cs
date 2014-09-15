@@ -91,6 +91,43 @@ namespace BSP_Boom.Controller
             middle = gameObjects[middlePos].getPosition(dimension);
             last = gameObjects[max].getPosition(dimension);
 
+            if (first <= middle && first <= last)
+            {
+                if (middle <= last)
+                {
+                    swap<GameObject>(middlePos, max - 1, gameObjects);
+                }
+                else
+                {
+                    swap<GameObject>(max, max-1, gameObjects);
+                    swap<GameObject>(middlePos, max, gameObjects);
+                }
+            }
+            else if (middle <= first && middle <= last)
+            {
+                if (first <= last)
+                {
+                    swap<GameObject>(min, max - 1, gameObjects);
+                }
+                else
+                {
+                    swap<GameObject>(max, max - 1, gameObjects);
+                    swap<GameObject>(min, max, gameObjects);
+                }
+            }
+            else if (last <= first && last <= middle)//TODO
+            {
+                if (first <= middle)
+                {
+                    swap<GameObject>(min, max - 1, gameObjects);
+                }
+                else
+                {
+                    swap<GameObject>(max, max - 1, gameObjects);
+                    swap<GameObject>(min, max, gameObjects);
+                }
+            }
+            /*
             if (first >= middle && first <= last || first <= middle && first >= last)
             {
                 return min;
@@ -105,6 +142,8 @@ namespace BSP_Boom.Controller
             {
                 return max;
             }
+            */
+
             return -1;
         }
 
