@@ -67,8 +67,8 @@ namespace BSP_Boom.Controller
             }
             //if (max - min > 2)
             {
-                QuickSort(min, middlePos - 1, dimension + 1);
-                QuickSort(middlePos, max, dimension + 1);
+                QuickSort(min, middlePos, dimension + 1);
+                QuickSort(middlePos + 1, max, dimension + 1);
             }
 
             return null;
