@@ -99,7 +99,7 @@ namespace BSP_Boom.Controller
                 }
                 else
                 {
-                    swap<GameObject>(max, max-1, gameObjects);
+                    swap<GameObject>(max, max - 1, gameObjects);
                     swap<GameObject>(middlePos, max, gameObjects);
                 }
             }
@@ -108,23 +108,31 @@ namespace BSP_Boom.Controller
                 if (first <= last)
                 {
                     swap<GameObject>(min, max - 1, gameObjects);
+                    swap<GameObject>(middlePos, min, gameObjects);
                 }
                 else
                 {
                     swap<GameObject>(max, max - 1, gameObjects);
                     swap<GameObject>(min, max, gameObjects);
+                    swap<GameObject>(middlePos, min, gameObjects);
                 }
             }
             else if (last <= first && last <= middle)//TODO
             {
-                if (first <= middle)
-                {
-                    swap<GameObject>(min, max - 1, gameObjects);
+                if (first <= middle)//last-first-middle
+                {//first-middle-last
+                    swap<GameObject>(max, min, gameObjects);
+                    //last-middle-first
+                    swap<GameObject>(middlePos, max, gameObjects);
+                    //last-first-middle
+                    swap<GameObject>(middlePos, max - 1, gameObjects);
                 }
-                else
+                else//last-middle-first
                 {
-                    swap<GameObject>(max, max - 1, gameObjects);
+                    //first-middle-last
                     swap<GameObject>(min, max, gameObjects);
+                    //last-middle-first
+                    swap<GameObject>(middlePos, max - 1, gameObjects);
                 }
             }
             /*
@@ -144,7 +152,7 @@ namespace BSP_Boom.Controller
             }
             */
 
-            return -1;
+            return max - 1;
         }
 
         public void Sort()
