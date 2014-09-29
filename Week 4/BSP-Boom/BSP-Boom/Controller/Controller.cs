@@ -46,16 +46,19 @@ namespace BSP_Boom.Controller
                 {
                     upper--;
                 }
-                swap<GameObject>(lower, upper, gameObjects);
-
-                if (middlePos == upper)
+                if (gameObjects[lower].getPosition(dimension) > gameObjects[upper].getPosition(dimension))
                 {
-                    middlePos = lower;
-                }
+                    swap<GameObject>(lower, upper, gameObjects);
 
-                else if (middlePos == lower)
-                {
-                    middlePos = upper;
+                    if (middlePos == upper)
+                    {
+                        middlePos = lower;
+                    }
+
+                    else if (middlePos == lower)
+                    {
+                        middlePos = upper;
+                    }
                 }
             }
 
@@ -63,11 +66,11 @@ namespace BSP_Boom.Controller
             Node left = null;
             Node right = null;
 
-            if (min < middlePos)
+            if (min <= middlePos)
             {
                 left = QuickSort(min, middlePos, dimension + 1, node);
             }
-            if (middlePos <= max)
+            if (middlePos < max)
             {
                 right = QuickSort(middlePos + 1, max, dimension + 1, node);
             }
@@ -134,18 +137,22 @@ namespace BSP_Boom.Controller
             {
                 SplitNode splitNode = (SplitNode)node;
 
-                if (splitNode.leftChild.lowerBound(0) < x && splitNode.leftChild.upperBound(0) > x && splitNode.leftChild.lowerBound(1) < y && splitNode.leftChild.upperBound(1) > y)
+                if (splitNode.leftChild.lowerBound(0) <= x && splitNode.leftChild.upperBound(0) >= x && splitNode.leftChild.lowerBound(1) <= y && splitNode.leftChild.upperBound(1) >= y)
                 {
                     found.AddRange(search(x, y, splitNode.leftChild));
                 }
-                if (splitNode.RightChild.lowerBound(0) < x && splitNode.RightChild.upperBound(0) > x && splitNode.RightChild.lowerBound(1) < y && splitNode.RightChild.upperBound(1) > y)
+                if (splitNode.RightChild.lowerBound(0) <= x && splitNode.RightChild.upperBound(0) >= x && splitNode.RightChild.lowerBound(1) <= y && splitNode.RightChild.upperBound(1) >= y)
                 {
                     found.AddRange(search(x, y, splitNode.RightChild));
                 }
             }
             else if (node.GetType() == typeof(EndNode))
             {
-                found.Add(((EndNode)node).Value);
+                EndNode endNode = (EndNode)node;
+                if (endNode.lowerBound(0) == x && endNode.lowerBound(1) == y)
+                {
+                    found.Add(endNode.Value);
+                }
             }
             return found.ToArray();
         }
