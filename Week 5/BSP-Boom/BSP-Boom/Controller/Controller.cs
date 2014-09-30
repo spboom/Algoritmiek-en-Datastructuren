@@ -142,7 +142,7 @@ namespace BSP_Boom.Controller
             Stopwatch exisitngTree = new Stopwatch();
             Stopwatch nonExisitngTree = new Stopwatch();
             Stopwatch array = new Stopwatch();
-            int times = 100;
+            int times = 1000;
 
             int[] values = new int[] { 5, 50, 500 };
             for (int i = 0; i < values.Length; i++)
