@@ -142,52 +142,71 @@ namespace BSP_Boom.Controller
             Stopwatch exisitngTree = new Stopwatch();
             Stopwatch nonExisitngTree = new Stopwatch();
             Stopwatch array = new Stopwatch();
-            int times = 1000;
+            int times = 1000, objects = 3;
 
             int[] values = new int[] { 5, 50, 500 };
-            for (int i = 0; i < values.Length; i++)
+
+            for (int w = 0; w <= objects; w++)
             {
-                fill(values[i]);
-                Random r = new Random(1);
-                int pos = r.Next(values[i]);
-                double x = gameObjects[pos].getPosition(0);
-                double y = gameObjects[pos].getPosition(1);
-
-                array.Restart();
-                for (int k = 0; k < times; k++)
+                for (int i = 0; i < values.Length; i++)
                 {
-                    GameObject[] foundArray = searchArray(x, y);
-                }
-                array.Stop();
+                    fill(values[i]);
+                    Random r = new Random(1);
+                    int pos = r.Next(values[i]);
+                    double x = -1, y = -1;
 
-                Array copy = Array.CreateInstance(typeof(GameObject), gameObjects.Length);
-                gameObjects.CopyTo(copy, 0);
-                nonExisitngTree.Reset();
-                exisitngTree.Reset();
-                for (int k = 0; k < times; k++)
-                {
-                    gameObjects = copy.OfType<GameObject>().ToArray();
-                    nonExisitngTree.Start();
-                    Node root = QuickSort(0, gameObjects.Length - 1, 0);
-                    for (int j = 0; j < GameObject.DIMENSION; j++)
+                    List<int> ints = new List<int>() { w };
+                    for (int l = w - 1; l > 0; l--)
                     {
-                        root.lowerBound(j);
-                        root.upperBound(j);
+                        int g = w;
+                        while (ints.Contains(g))
+                        {
+                            g = r.Next(gameObjects.Length);
+                        }
+                        ints.Add(g);
+                        gameObjects[g] = gameObjects[w];
                     }
 
-                    exisitngTree.Start();
-                    GameObject[] foundTree = search(x, y, root);
-                    nonExisitngTree.Stop();
-                    exisitngTree.Stop();
+                    x = gameObjects[pos].getPosition(0);
+                    y = gameObjects[pos].getPosition(1);
+
+
+                    array.Restart();
+                    for (int k = 0; k < times; k++)
+                    {
+                        GameObject[] foundArray = searchArray(x, y);
+                    }
+                    array.Stop();
+
+                    Array copy = Array.CreateInstance(typeof(GameObject), gameObjects.Length);
+                    gameObjects.CopyTo(copy, 0);
+                    nonExisitngTree.Reset();
+                    exisitngTree.Reset();
+                    for (int k = 0; k < times; k++)
+                    {
+                        gameObjects = copy.OfType<GameObject>().ToArray();
+                        nonExisitngTree.Start();
+                        Node root = QuickSort(0, gameObjects.Length - 1, 0);
+                        for (int j = 0; j < GameObject.DIMENSION; j++)
+                        {
+                            root.lowerBound(j);
+                            root.upperBound(j);
+                        }
+
+                        exisitngTree.Start();
+                        GameObject[] foundTree = search(x, y, root);
+                        nonExisitngTree.Stop();
+                        exisitngTree.Stop();
+                    }
+
+                    Console.WriteLine("Clicked objects = " + w);
+                    Console.WriteLine("Amount = " + values[i]);
+                    Console.WriteLine("ExistingTree = " + exisitngTree.ElapsedMilliseconds);
+                    Console.WriteLine("NonExistingTree = " + nonExisitngTree.ElapsedMilliseconds);
+                    Console.WriteLine("array = " + array.ElapsedMilliseconds);
+                    Console.WriteLine();
                 }
-
-                Console.WriteLine("Amount = " + values[i]);
-                Console.WriteLine("ExistingTree = " + exisitngTree.ElapsedMilliseconds);
-                Console.WriteLine("NonExistingTree = " + nonExisitngTree.ElapsedMilliseconds);
-                Console.WriteLine("array = " + array.ElapsedMilliseconds);
-                Console.WriteLine();
             }
-
         }
 
         public GameObject[] searchArray(double x, double y)
