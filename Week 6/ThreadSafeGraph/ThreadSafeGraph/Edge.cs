@@ -8,5 +8,21 @@ namespace ThreadSafeGraph
 {
     class Edge
     {
+        public Vertex Next;
+        public Vertex Previous;
+
+        public Edge(Vertex next, Vertex previous)
+        {
+            Next = next;
+            Previous = previous;
+        }
+
+        public void changeEdge(Vertex next, Vertex previous)
+        {
+            Next = next;
+            Previous = previous;
+        }
+
+
     }
 }
