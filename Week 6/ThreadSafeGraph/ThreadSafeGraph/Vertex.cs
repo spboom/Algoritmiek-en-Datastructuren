@@ -10,23 +10,67 @@ namespace ThreadSafeGraph
     {
         public char label; // label (e.g. ‘A’)
         public bool wasVisited;
-        private List<Edge> edges;
+        public List<Edge> toEdges;
+        public List<Edge> fromEdges;
+        public Vertex[] Vertexes
+        {
+            get
+            {
+                List<Vertex> vertexes = new List<Vertex>();
+                foreach (Edge edge in toEdges)
+                {
+                    vertexes.Add(edge.Next);
+                }
+                return vertexes.ToArray();
+            }
+        }
 
         public Vertex(char lab) // constructor
         {
             label = lab;
             wasVisited = false;
-            edges = new List<Edge>();
+            toEdges = new List<Edge>();
+            fromEdges = new List<Edge>();
         }
 
         public void removeEdge(Edge edge)
         {
-            edges.Remove(edge);
+            if (toEdges.Contains(edge))
+            {
+                toEdges.Remove(edge);
+            }
+            if (fromEdges.Contains(edge))
+            {
+                fromEdges.Remove(edge);
+            }
         }
 
-        public void addEdge(Edge edge)
+        public void addToEdge(Edge edge)
         {
-            edges.Add(edge);
+            toEdges.Add(edge);
+        }
+
+        public void addFromEdge(Edge edge)
+        {
+            fromEdges.Add(edge);
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " " + label;
+        }
+
+        public void deleteReferences()
+        {
+            foreach (Edge e in fromEdges)
+            {
+                removeEdge(e);
+            }
+            foreach (Edge e in toEdges)
+            {
+                removeEdge(e);
+            }
+
         }
     }
 }

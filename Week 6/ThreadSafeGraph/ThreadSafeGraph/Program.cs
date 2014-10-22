@@ -10,6 +10,8 @@ namespace ThreadSafeGraph
     {
         static void Main(string[] args)
         {
+            Graph graph = new Graph();
+            graph.depthFirstsearch();
 
         }
     }

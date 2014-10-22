@@ -6,10 +6,44 @@ using System.Threading.Tasks;
 
 namespace ThreadSafeGraph
 {
-    class Edge
+    public class Edge
     {
-        public Vertex Next;
-        public Vertex Previous;
+        private Vertex next;
+        public Vertex Next
+        {
+            get { return next; }
+            set
+            {
+                if (Next != null)
+                {
+                    Next.removeEdge(this);
+                }
+                next = value;
+                if (Next != null && !Next.fromEdges.Contains(this))
+                {
+                    Next.addFromEdge(this);
+                }
+            }
+        }
+
+        private Vertex previous;
+        public Vertex Previous
+        {
+            get { return previous; }
+            set
+            {
+                if (Previous != null)
+                {
+                    Previous.removeEdge(this);
+                }
+
+                previous = value;
+                if (Previous != null && !Previous.toEdges.Contains(this))
+                {
+                    Previous.addToEdge(this);
+                }
+            }
+        }
 
         public Edge(Vertex next, Vertex previous)
         {
@@ -23,6 +57,10 @@ namespace ThreadSafeGraph
             Previous = previous;
         }
 
-
+        public void deleteReferences()
+        {
+            Next.removeEdge(this);
+            Previous.removeEdge(this);
+        }
     }
 }
