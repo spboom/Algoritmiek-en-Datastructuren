@@ -34,12 +34,12 @@ namespace ThreadSafeGraph
 
             for (int i = 0; i < next.Length; i++)
             {
-                vertex.addToEdge(new Edge(next[i], vertex));
+                new Edge(next[i], vertex);
             }
 
             for (int i = 0; i < previous.Length; i++)
             {
-                vertex.addToEdge(new Edge(vertex, previous[i]));
+                new Edge(vertex, previous[i]);
             }
 
             changeSemaphore.Release();
